@@ -2,7 +2,6 @@ from enum import Enum
 
 
 class Color(Enum):
-
     RED = 1
     GREEN = 2
     YELLOW = 3
@@ -11,5 +10,3 @@ class Color(Enum):
     BROWN = 6
     WHITE = 7
     BLACK = 8
-
-
