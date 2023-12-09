@@ -84,7 +84,7 @@ class Client:
             except ValueError:
                 print("Ungültige Eingabe. Bitte wählen Sie eine Zahl zwischen 2 und 8.")
 
-    def prompt_for_code(self, code_length, color_amount) -> list:
+    def prompt_for_code(self, code_length: int, color_amount: int) -> list:
         """
         Prompts the user to set the code.
 
