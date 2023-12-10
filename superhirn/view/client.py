@@ -1,8 +1,5 @@
 import re
 
-from superhirn.data.code import Code
-from superhirn.data.color import Color
-
 
 class Client:
 
@@ -87,25 +84,25 @@ class Client:
             except ValueError:
                 print("Ungültige Eingabe. Bitte wählen Sie eine Zahl zwischen 2 und 8.")
 
-    def prompt_for_code(self, code_length: int, color_amount: int) -> Code:
+    def prompt_for_code(self, code_length: int, color_amount: int) -> str:
         """
         Prompts the user to set the code.
 
         :return: selected code.
         """
         code_colors = []
+        code = ""
         for i in range(code_length):
             while True:
                 try:
                     print("RED = 1,GREEN = 2, YELLOW = 3, BLUE = 4, ORANGE = 5, BROWN = 6, WHITE = 7,BLACK = 8")
                     element = int(input(f"Farbe an Stelle {i + 1} von {code_length}: "))
                     if 1 <= element <= color_amount:
-                        code_colors.append(Color(element))
+                        code = code + str(element)
                         break
                     else:
                         print(f"Ungültige Eingabe. Bitte wählen Sie eine Zahl zwischen 1 und {color_amount}.")
                 except ValueError:
                     print(f"Ungültige Eingabe. Bitte wählen Sie eine Zahl zwischen 1 und {color_amount}.")
-        print(f"Der Code lautet: {code_colors}")
-        code_object = Code(code_colors)
-        return code_object
+        print(f"Der Code lautet:  {code}")
+        return code
