@@ -11,18 +11,12 @@ class GameControllerInterface(ABC):
         pass
 
     @abstractmethod
-    def start_game(self, human_role, online):
+    def set_game_parameters(self, human_role: str, code_length: int, available_colors: str, is_online: bool) -> None:
         """
-        Initiates new game and sets role and online params
-        :param online: indicates whether game takes place on- or offline
-        :param human_role: the role chosen by the player
-        :return: void
-        """
-        pass
-
-    @abstractmethod
-    def get_game_state(self):
-        """
-        :return: current state of the game
+        Sets the initial parameters for the Game to be started
+        :param human_role: the role taken by the user
+        :param code_length: the fixed code length of the game
+        :param available_colors: the colors available to compose the Code of
+        :param is_online: indicates whether the game shall take place locally or against a remote server encoder
         """
         pass
