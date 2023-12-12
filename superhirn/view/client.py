@@ -1,7 +1,54 @@
+import os
 import re
+
+from superhirn.view.game_view import GameView
+from superhirn.view.main_menu_view import MainMenuView
+from superhirn.view.manual_view import ManualView
 
 
 class Client:
+    def __init__(self):
+        self.game_running = True
+        self.role = None
+
+    def command_loop(self):
+        """
+        Command loop for the user.
+        """
+        main_menu_view = MainMenuView()
+        manual_view = ManualView()
+        self.clear_screen()
+        main_menu_view.print_start_menu()
+        while self.game_running:
+            user_input = input("Befehl eingeben: ")
+            if user_input == 'help':
+                self.clear_screen()
+                manual_view.print_manual()
+                main_menu_view.print_main_menu()
+            elif user_input == 'start':
+                self.clear_screen()
+                main_menu_view.print_main_menu()
+                self.setup_game()
+                break  # temp for prototype
+            elif user_input == 'exit':
+                print("Das Spiel wird beendet.")
+                break
+            else:
+                print("Ungültiger Befehl.")
+
+    def setup_game(self):
+        """
+        Asks the user for game parameters.
+        """
+        game_view = GameView
+        self.role = self.prompt_for_role()
+        if self.role == "Rater":
+            if self.prompt_for_encoder_mode() == "Netzwerk":
+                self.prompt_for_connection()
+        self.prompt_for_code_length()
+        self.prompt_for_color_amount()
+        if self.role == "Codierer":
+            code = self.prompt_for_code(4, 3)
 
     def prompt_for_role(self) -> str:
         """
@@ -92,10 +139,10 @@ class Client:
         """
         code_colors = []
         code = ""
+        print("RED = 1,GREEN = 2, YELLOW = 3, BLUE = 4, ORANGE = 5, BROWN = 6, WHITE = 7,BLACK = 8")
         for i in range(code_length):
             while True:
                 try:
-                    print("RED = 1,GREEN = 2, YELLOW = 3, BLUE = 4, ORANGE = 5, BROWN = 6, WHITE = 7,BLACK = 8")
                     element = int(input(f"Farbe an Stelle {i + 1} von {code_length}: "))
                     if 1 <= element <= color_amount:
                         code = code + str(element)
@@ -106,3 +153,6 @@ class Client:
                     print(f"Ungültige Eingabe. Bitte wählen Sie eine Zahl zwischen 1 und {color_amount}.")
         print(f"Der Code lautet:  {code}")
         return code
+
+    def clear_screen(self):
+        os.system('cls' if os.name == 'nt' else 'clear')
