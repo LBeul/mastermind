@@ -1,16 +1,13 @@
-from superhirn.data.color import Color
+from superhirn.data.code import Code
 from superhirn.logic.encoder.encoder_interface import EncoderInterface
 
 
 class NetworkEncoder(EncoderInterface):
-    def __init__(self, code_length: int, available_colors: list[Color], ip: str, port: int):
-        self._code_length = code_length
-        self._available_colors = available_colors
-        self._ip_address = ip
-        self._port = port
+    def __init__(self, host: str):
+        self._host = host
         self._generated_code = None
 
-    def generate_code(self):
+    def generate_code(self) -> Code:
         pass
 
     def rate(self, code_guess):

@@ -1,81 +1,22 @@
 import os
 import re
-import time
 
-from superhirn.view.game_view import GameView
+from superhirn.logic.ui_connector.ui_connector_interface import UiControllerInterface
 from superhirn.view.main_menu_view import MainMenuView
 from superhirn.view.manual_view import ManualView
 
 
-class Client:
-    def __init__(self):
-        self.game_running = True
-        self.role = None
-        self.code_length = None
-        self.color_amount = None
-        self.code = None
+class Client(UiControllerInterface):
 
-    def command_loop(self):
-        """
-        Command loop for the user.
-        """
-        main_menu_view = MainMenuView()
+    def show_help(self):
         manual_view = ManualView()
         self.clear_screen()
+        manual_view.print_manual()
+
+    def show_menu(self) -> str:
+        main_menu_view = MainMenuView()
+        self.clear_screen()
         main_menu_view.print_start_menu()
-        while self.game_running:
-            user_input = input("Befehl eingeben: ")
-            if user_input == 'help':
-                self.clear_screen()
-                manual_view.print_manual()
-                main_menu_view.print_main_menu()
-            elif user_input == 'start':
-                self.clear_screen()
-                main_menu_view.print_main_menu()
-                self.setup_game()
-                print("Spiel startet...")
-                time.sleep(5)
-                self.active_game_loop()
-                break  # temp for prototype
-            elif user_input == 'exit':
-                print("Das Spiel wird beendet.")
-                break
-            else:
-                print("Ungültiger Befehl.")
-
-    def active_game_loop(self):
-        """
-        Game Example for Prototype.
-        """
-        game_view = GameView
-        self.clear_screen()
-        game_view.print_game_board([], [], self.role, self.code)
-        time.sleep(3)
-        self.clear_screen()
-        game_view.print_game_board(["1111"], [""], self.role, self.code)
-        time.sleep(3)
-        self.clear_screen()
-        game_view.print_game_board(["1111", "1112"], ["", "7"], self.role, self.code)
-        time.sleep(3)
-        self.clear_screen()
-        game_view.print_game_board(["1111", "1112", "1121"], ["", "7", "8"], self.role, self.code)
-        time.sleep(3)
-        self.clear_screen()
-        game_view.print_game_board(["1111", "1112", "1121", "1221"], ["", "7", "8", "8"], self.role, self.code)
-
-    def setup_game(self):
-        """
-        Asks the user for game parameters.
-        """
-        game_view = GameView
-        self.role = self.prompt_for_role()
-        if self.role == "Rater":
-            if self.prompt_for_encoder_mode() == "Netzwerk":
-                self.prompt_for_connection()
-        self.prompt_for_code_length()
-        self.prompt_for_color_amount()
-        if self.role == "Codierer":
-            code = self.prompt_for_code(self.code_length, self.color_amount)
 
     def prompt_for_role(self) -> str:
         """

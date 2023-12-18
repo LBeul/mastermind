@@ -15,6 +15,14 @@ class DataInterface:
         pass
 
     @abstractmethod
+    def get_code(self) -> Code:
+        """
+        Gets the game code.
+        :return: Code.
+        """
+        pass
+
+    @abstractmethod
     def set_code_length(self, given_code_length: int):
         """
         Sets the code length of the game.
@@ -23,10 +31,26 @@ class DataInterface:
         pass
 
     @abstractmethod
+    def get_code_length(self) -> int:
+        """
+        Gets the code length of the game.
+        :return: Code length as int.
+        """
+        pass
+
+    @abstractmethod
     def set_color_availabilities(self, given_color_availabilities):
         """
         Sets the amount of colors, which will be used in the game
         :param given_color_availabilities: Amount of colors as int
+        """
+        pass
+
+    @abstractmethod
+    def get_color_availabilities(self) -> int:
+        """
+        Gets the amount of colors, which will be used in the game
+        :return: Amount of colors as int
         """
         pass
 

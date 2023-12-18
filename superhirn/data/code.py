@@ -1,12 +1,12 @@
-from superhirn.data import color
+from superhirn.data.color import Color
 
 
 class Code:
 
-    def __init__(self, colors: list[color]):
+    def __init__(self, colors: list[Color]):
         self.colors = colors
 
-    def get_color_at(self, number: int) -> color:
+    def get_color_at(self, number: int) -> Color:
         """
         Return color at given index.
         :param number: Index of color in array
@@ -19,7 +19,7 @@ class Code:
         Return code in list format containing the int values of the color enum
         :return: List containing the color values
         """
-        return [c.value for c in self.colors]
+        return [c for c in self.colors]
 
     def __str__(self):
         """
