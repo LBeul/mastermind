@@ -13,11 +13,6 @@ from superhirn.logic.gamecontroller.game_controller_interface import GameControl
 from superhirn.logic.ui_connector.ui_connector_interface import UiControllerInterface
 
 
-# def color_string_to_list_old(color_string: str) -> list[Color]:
-#    split_values: list[str] = color_string.split(",")
-#    return [Color(int(val)) for val in split_values]
-
-
 def color_string_to_list(color_string: str) -> list[Color]:
     return [Color(int(val)) for val in color_string]
 
@@ -54,6 +49,7 @@ class GameController(GameControllerInterface):
         if role == "Codierer":
             code = ui.prompt_for_code(code_length, color_amount)
             self._game_data.set_code(Code(color_string_to_list(code)))
+            print(self._game_data.get_code())
         else:
             code = self._encoder.generate_code()
             self._game_data.set_code(code)

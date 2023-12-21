@@ -16,14 +16,19 @@ class Client(UiControllerInterface):
     def show_menu(self) -> str:
         main_menu_view = MainMenuView()
         self.clear_screen()
-        main_menu_view.print_start_menu()
+        main_menu_view.print_main_menu()
+        command = input().lower()
+        if command == 'start':
+            return "start"
+        elif command == 'help':
+            return "help"
+        elif command == 'exit':
+            return "exit"
+        else:
+            print("Ungültige Eingabe")
+        return command
 
     def prompt_for_role(self) -> str:
-        """
-        Prompts the user to select a role.
-
-        :return: selected role.
-        """
         while True:
             role = input("Wählen Sie eine Rolle 'Codierer' oder 'Rater': ").lower()
             if role == 'rater':

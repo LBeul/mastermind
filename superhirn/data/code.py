@@ -19,7 +19,7 @@ class Code:
         Return code in list format containing the int values of the color enum
         :return: List containing the color values
         """
-        return [c for c in self.colors]
+        return [c.value for c in self.colors]
 
     def __str__(self):
         """
