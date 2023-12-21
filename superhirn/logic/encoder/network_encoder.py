@@ -7,7 +7,7 @@ class NetworkEncoder(EncoderInterface):
         self._host = host
         self._generated_code = None
 
-    def generate_code(self) -> Code:
+    def generate_code(self, code_length: int, color_availabilities: int) -> Code:
         pass
 
     def rate(self, code_guess):

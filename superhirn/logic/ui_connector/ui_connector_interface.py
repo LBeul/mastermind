@@ -21,6 +21,14 @@ class UiControllerInterface(ABC):
         """
         pass
 
+    def prompt_for_decoder_mode(self) -> str:
+        """
+        Prompts the user to select decoder type.
+
+        :return: selected type.
+        """
+        pass
+
     @abstractmethod
     def prompt_for_connection(self) -> str:
         """
@@ -58,6 +66,24 @@ class UiControllerInterface(ABC):
         Prints help for available_colors.
 
         :return: selected code.
+        """
+        pass
+
+    @abstractmethod
+    def prompt_for_guess(self, code_length: int, color_amount: int) -> str:
+        """
+        Prompts the user to give a guess.
+
+        :return: given guess.
+        """
+        pass
+
+    @abstractmethod
+    def prompt_for_rating(self, code_length: int) -> str:
+        """
+        Prompts the user to give a rating.
+
+        :return: given rating.
         """
         pass
 

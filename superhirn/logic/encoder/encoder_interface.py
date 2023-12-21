@@ -5,9 +5,11 @@ from superhirn.data.code import Code
 
 class EncoderInterface(ABC):
     @abstractmethod
-    def generate_code(self) -> Code:
+    def generate_code(self, code_length: int, color_availabilities: int) -> Code:
         """
         Generates a code of the given length and available colors
+        :param code_length: length of the to be generated code.
+        :param color_availabilities: number of colors of the to be generated code.
         :return: the newly generated Code instance
         """
         pass

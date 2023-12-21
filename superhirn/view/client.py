@@ -38,6 +38,16 @@ class Client(UiControllerInterface):
             else:
                 print("Ungültige Eingabe. Wählen Sie eine Rolle 'Codierer' oder 'Rater': ")
 
+    def prompt_for_decoder_mode(self) -> str:
+        while True:
+            role = input("Möchten Sie selbst raten oder soll der Computer raten? 'Selbst', 'Computer': ").lower()
+            if role == 'selbst':
+                return 'Selbst'
+            elif role == 'computer':
+                return 'Computer'
+            else:
+                print("Ungültige Eingabe. Wählen Sie 'Selbst' oder 'Computer': ")
+
     def prompt_for_encoder_mode(self) -> str:
         """
         Prompts the user to select the encoder type.
@@ -129,6 +139,40 @@ class Client(UiControllerInterface):
         print(f"Der Code wurde gesetzt:  {code}")
         self.code = code
         return code
+
+    def prompt_for_guess(self, code_length: int, color_amount: int) -> str:
+        color_help = ["Rot=1", "Grün=2", "Gelb=3", "Blau=4", "Orange=5", "Braun=6", "Weiss=7", "Schwarz=8"]
+        available_colors = color_help[:color_amount]
+        print(available_colors)
+        guess = ""
+        for i in range(code_length):
+            while True:
+                try:
+                    element = int(input(f"Farbe an Stelle {i + 1} von {code_length}: "))
+                    if 1 <= element <= color_amount:
+                        guess = guess + str(element)
+                        break
+                    else:
+                        print(f"Ungültige Eingabe. Bitte wählen Sie eine Zahl zwischen 1 und {color_amount}.")
+                except ValueError:
+                    print(f"Ungültige Eingabe. Bitte wählen Sie eine Zahl zwischen 1 und {color_amount}.")
+        print(f"Der Code wurde geraten:  {guess}")
+        return guess
+
+    def prompt_for_rating(self, code_length: int) -> str:
+        color_help = ["Weiss=7", "Schwarz=8"]
+        print(color_help)
+        while True:
+            try:
+                rating = input("Rating: ")
+                if not all(char in '78' for char in rating) | len(rating) > code_length:
+                    print("Ungültige Eingabe. Bitte geben Sie ein leeres Rating oder ein Rating aus 7/8 ein")
+                else:
+                    break
+            except ValueError:
+                print("Ungültige Eingabe. Bitte geben Sie die 7, 8 oder Nichts")
+        print(f"Diese Feedback wurde gegeben:  {rating}")
+        return rating
 
     def clear_screen(self):
         """

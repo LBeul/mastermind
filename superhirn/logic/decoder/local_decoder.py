@@ -1,7 +1,6 @@
 import random
 
 from superhirn.data.code import Code
-from superhirn.data.data_interface import DataInterface
 from superhirn.logic.decoder.decoder_interface import DecoderInterface
 
 

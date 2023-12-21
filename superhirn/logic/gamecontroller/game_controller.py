@@ -1,12 +1,12 @@
 from typing import Optional
 
-from superhirn.data.code import Code
-from superhirn.data.color import Color
 from superhirn.data.data_interface import DataInterface
 from superhirn.data.game import Game
 from superhirn.logic.decoder.decoder_interface import DecoderInterface
+from superhirn.logic.decoder.human_decoder import HumanDecoder
 from superhirn.logic.decoder.local_decoder import LocalDecoder
 from superhirn.logic.encoder.encoder_interface import EncoderInterface
+from superhirn.logic.encoder.human_encoder import HumanEncoder
 from superhirn.logic.encoder.local_encoder import LocalEncoder
 from superhirn.logic.encoder.network_encoder import NetworkEncoder
 from superhirn.logic.gamecontroller.game_controller_interface import GameControllerInterface
@@ -33,13 +33,21 @@ class GameController(GameControllerInterface):
             raise Exception("Fehler: Spiel wurde schon gestartet!")
         role = ui.prompt_for_role()
         if role.lower() == "codierer":
-            self._decoder = LocalDecoder(self._game_data)
+            self._decoder = LocalDecoder()
+            self._encoder = HumanEncoder(ui)
         elif role.lower() == "rater":
             if ui.prompt_for_encoder_mode() == "Netzwerk":
                 host = ui.prompt_for_connection()
-                self._encoder = NetworkEncoder(host)
+                decoder_mode = ui.prompt_for_decoder_mode()
+                if decoder_mode == "Selbst":
+                    self._encoder = NetworkEncoder(host)
+                    self._decoder = HumanDecoder(ui)
+                elif decoder_mode == "Computer":
+                    self._encoder = NetworkEncoder(host)
+                    self._decoder = LocalDecoder()
+
             else:
-                self._encoder = LocalEncoder(self._game_data)
+                self._encoder = LocalEncoder()
         # ToDO String der richtiger Typ? boolean oder int könnte besser sein oder ENUM?
 
         code_length = ui.prompt_for_code_length()
