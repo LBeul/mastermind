@@ -1,6 +1,6 @@
 import unittest
 
-from superhirn.main import multiply
+from main import multiply
 
 
 class TestSimple(unittest.TestCase):

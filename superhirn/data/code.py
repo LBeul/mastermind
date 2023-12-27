@@ -1,12 +1,12 @@
-from superhirn.data import color
+from superhirn.data.color import Color
 
 
 class Code:
 
-    def __init__(self, colors: list[color]):
+    def __init__(self, colors: list[Color]):
         self.colors = colors
 
-    def get_color_at(self, number: int) -> color:
+    def get_color_at(self, number: int) -> Color:
         """
         Return color at given index.
         :param number: Index of color in array
