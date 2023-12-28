@@ -5,12 +5,11 @@ from superhirn.logic.util.code import Code
 
 
 class HumanDecoder(DecoderInterface):
-    def __init__(self, ui: UiControllerInterface):
-        self._attempts: list[Code] = []
+    def __init__(self, ui: UiControllerInterface, game_data: DataControllerInterface):
         self._ui = ui
 
-    def guess(self, code_length: int, color_availabilities: int) -> Code:
+    def guess(self) -> Code:
         print("Sie dürfen raten:")
-        input_string = self._ui.prompt_for_guess(code_length, color_availabilities)
-        color_list = color_string_to_list(input_string)
-        return Code(color_list)
+        code = self._ui.prompt_for_guess(self._game_data.get_code_length(),
+                                         self._game_data.get_number_of_colors())
+        return code

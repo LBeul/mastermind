@@ -63,7 +63,7 @@ class DataControllerInterface:
         pass
 
     @abstractmethod
-    def get_questions(self) -> list:
+    def get_questions(self) -> list[Code]:
         """
         Gets the questions.
         :return: All questions.
@@ -79,7 +79,7 @@ class DataControllerInterface:
         pass
 
     @abstractmethod
-    def get_ratings(self) -> list:
+    def get_ratings(self) -> list[Rating]:
         """
         Gets the ratings.
         :return: All ratings.

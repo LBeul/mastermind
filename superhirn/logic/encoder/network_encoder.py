@@ -1,6 +1,9 @@
+import jsonschema as js
+import requests
+
+from superhirn.logic.connector.data_controller_interface import DataControllerInterface
 from superhirn.logic.encoder.encoder_interface import EncoderInterface
 from superhirn.logic.util.code import Code
-from superhirn.logic.util.rating import Rating
 
 
 class NetworkEncoder(EncoderInterface):

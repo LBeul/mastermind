@@ -1,6 +1,5 @@
 from typing import Optional
 
-from superhirn.data.game import Game
 from superhirn.logic.connector.data_controller_interface import DataControllerInterface
 from superhirn.logic.connector.ui_controller_interface import UiControllerInterface
 from superhirn.logic.decoder.decoder_interface import DecoderInterface
@@ -11,60 +10,46 @@ from superhirn.logic.encoder.human_encoder import HumanEncoder
 from superhirn.logic.encoder.local_encoder import LocalEncoder
 from superhirn.logic.encoder.network_encoder import NetworkEncoder
 from superhirn.logic.gamecontroller.game_controller_interface import GameControllerInterface
+from superhirn.logic.util.role import Role
 
 
-def singleton(cls):
-    instances = {}
-
-    def get_instance(*args, **kwargs):
-        if cls not in instances:
-            instances[cls] = cls(*args, **kwargs)
-        return instances[cls]
-
-    return get_instance
-
-
-@singleton
 class GameController(GameControllerInterface):
 
     def __init__(self):
-        self._role = None
+        self.ui = None
         self._setup_completed = False
-        self._game_data: DataControllerInterface = Game()
+        self._game_data = None
         self._encoder: Optional[EncoderInterface] = None
         self._decoder: Optional[DecoderInterface] = None
 
-    def setup(self, ui: UiControllerInterface):
+    def setup(self, ui: UiControllerInterface, game_data: DataControllerInterface):
+        self.ui = ui
+        self._game_data = game_data
         if self._setup_completed:
             raise Exception("Fehler: Spiel wurde schon gestartet!")
         role = ui.prompt_for_role()
-        if role.lower() == "codierer":
-            self._decoder = LocalDecoder()
-            self._encoder = HumanEncoder(ui)
-            self._role = "codierer"
-        elif role.lower() == "rater":
-            if ui.prompt_for_network_encoder() == "Netzwerk":
+        if role == Role.ENCODER:
+            self._decoder = LocalDecoder(game_data)
+            self._encoder = HumanEncoder(ui, game_data)
+        elif role == Role.DECODER:
+
+            if ui.prompt_for_network_encoder():
                 host = ui.prompt_for_host_addr()
-                decoder_mode = ui.prompt_for_computer_decoder()
-                if decoder_mode == "Selbst":
-                    self._encoder = NetworkEncoder(host)
-                    self._decoder = HumanDecoder(ui)
-                elif decoder_mode == "Computer":
-                    self._encoder = NetworkEncoder(host)
-                    self._decoder = LocalDecoder()
-                self._role = "rater"
+                self._encoder = NetworkEncoder(game_data, host, "42")
+                if ui.prompt_for_computer_decoder():
+                    self._decoder = LocalDecoder(game_data)
+                else:
+                    self._decoder = HumanDecoder(ui, game_data)
             else:
-                self._encoder = LocalEncoder()
-                self._decoder = HumanDecoder(ui)
-        # ToDO String der richtiger Typ? boolean oder int könnte besser sein oder ENUM?
+                self._encoder = LocalEncoder(game_data)
+                self._decoder = HumanDecoder(ui, game_data)
 
         code_length = ui.prompt_for_code_length()
         self._game_data.set_code_length(code_length)
-        color_amount = ui.prompt_for_number_of_colors()
-        self._game_data.set_number_of_colors(color_amount)
+        number_of_colors = ui.prompt_for_number_of_colors()
+        self._game_data.set_number_of_colors(number_of_colors)
 
-        code = self._encoder.generate_code(self._game_data.get_code_length(),
-                                           self._game_data.get_number_of_colors())
+        code = self._encoder.generate_code()
         self._game_data.set_code(code)
 
         self._setup_completed = True

@@ -6,7 +6,7 @@ from superhirn.logic.util.rating import Rating
 
 class EncoderInterface(ABC):
     @abstractmethod
-    def generate_code(self, code_length: int, color_availabilities: int) -> Code:
+    def generate_code(self) -> Code:
         """
         Generates a code of the given length and available colors
         :param code_length: length of the to be generated code.

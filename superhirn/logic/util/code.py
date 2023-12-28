@@ -21,6 +21,21 @@ class Code:
         """
         return [c.value for c in self.colors]
 
+    def to_int_string(self) -> str:
+        """
+        Returns the current code as a string.
+        :return: Code as string.
+        """
+        int_list = self.to_int_list()
+        return ''.join(str(i) for i in int_list)
+
+    def get_length(self) -> int:
+        """
+        Returns length of current code.
+        :return: code length as an integer.
+        """
+        return len(self.colors)
+
     def __str__(self):
         """
         Return string-formatted list of colors within the Code
