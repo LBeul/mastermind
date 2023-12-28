@@ -1,7 +1,7 @@
 from abc import abstractmethod
 
-from superhirn.data.code import Code
-from superhirn.data.rating import Rating
+from superhirn.logic.util.code import Code
+from superhirn.logic.util.rating import Rating
 
 
 class DataControllerInterface:

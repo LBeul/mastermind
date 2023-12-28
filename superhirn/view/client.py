@@ -3,79 +3,102 @@ import re
 from abc import ABC
 
 from superhirn.logic.connector.ui_controller_interface import UiControllerInterface
-from superhirn.view.game_view import GameView
+from superhirn.logic.util.code import Code
+from superhirn.logic.util.color import Color
+from superhirn.logic.util.rating import Rating
+from superhirn.logic.util.role import Role
 
 
 class Client(UiControllerInterface, ABC):
 
-    def show_help(self):
+    def __check_for_ui_command(self, input_string: str) -> bool:
+        """
+        Help function to check input for game commands.
+        :param input_string:
+        :return: true if command was found, false if no command was found.
+        """
+        if input_string == "help":
+            self.__show_help()
+            return True
+        elif input_string == "exit":
+            exit()
+        return False
+
+    def __clear_screen(self):
+        """
+        Helper function to clean the terminal screen.
+        """
+        os.system('cls' if os.name == 'nt' else 'clear')
+
+    def __show_help(self):
+        """
+        Shows the help page.
+        """
         print("--------------------------------------------------")
         print("Spielanleitung")
         print("--------------------------------------------------")
         print("Anleitung 1,2,3")
         print("--------------------------------------------------")
         print("'help' zum Anzeigen der Spielanleitung")
-        print("'start' zum Spielstart oder Neustart")
         print("'exit' zum Beenden")
         print("--------------------------------------------------")
 
-    def show_main_menu(self):
+    def update_board(self, questions: list, ratings: list, role: str, code: str):
+        questions.reverse()
+        ratings.reverse()
+        output = zip(questions, ratings)
+        print("Spielfeld")
         print("--------------------------------------------------")
-        print("Super Super Hirn")
-        print("--------------------------------------------------")
-        print("'help' zum Anzeigen der Spielanleitung")
-        print("'start' zum Spielstart oder Neustart")
-        print("'exit' zum Beenden")
+        if role == "Codierer":
+            print("Code: " + code)
+        else:
+            print("Code: XXXXX")
+        print("")
+        for item1, item2 in output:
+            print(item1, "|", item2)
         print("--------------------------------------------------")
 
-    def show_game_view(self, questions: list, ratings: list, role: str, code: str):
-        game_view = GameView()
-        game_view.print_game_board(questions, ratings, role, code)
-
-        def prompt_for_role(self) -> str:
-            while True:
-                role = input("Wählen Sie eine Rolle 'Codierer' oder 'Rater': ").lower()
-                if role == 'rater':
-                    return 'Rater'
-                elif role == 'codierer':
-                    return 'Codierer'
-                else:
-                    print("Ungültige Eingabe. Wählen Sie eine Rolle 'Codierer' oder 'Rater': ")
-
-    def prompt_for_decoder(self) -> str:
+    def prompt_for_role(self) -> Role:
         while True:
-            role = input("Möchten Sie selbst raten oder soll der Computer raten? 'Selbst', 'Computer': ").lower()
-            if role == 'selbst':
-                return 'Selbst'
-            elif role == 'computer':
-                return 'Computer'
+            role = input("Wählen Sie eine Rolle 'Codierer' oder 'Rater': ").lower()
+            if self.__check_for_ui_command(role):
+                return self.prompt_for_role()
+            if role == 'rater':
+                return Role.DECODER
+            elif role == 'codierer':
+                return Role.ENCODER
             else:
-                print("Ungültige Eingabe. Wählen Sie 'Selbst' oder 'Computer': ")
+                print("Ungültige Eingabe. Wählen Sie eine Rolle 'Codierer' oder 'Rater': ")
 
-    def prompt_for_encoder(self) -> str:
-        """
-        Prompts the user to select the encoder type.
-
-        :return: selected type.
-        """
+    def prompt_for_network_encoder(self) -> bool:
         while True:
             mode = input("Lokal oder Netzwerk: ").lower()
+            if self.__check_for_ui_command(mode):
+                return self.prompt_for_network_encoder()
             if mode == 'lokal':
-                return 'Lokal'
+                return False
             elif mode == 'netzwerk':
-                return 'Netzwerk'
+                return True
             else:
                 print("Ungültige Eingabe. Wählen Sie eine Rolle 'Lokal' oder 'Netzwerk': ")
 
-    def prompt_for_connection(self) -> str:
-        """
-        Prompts the user to set the connection address.
-        ip:port
+    def prompt_for_computer_decoder(self) -> bool:
+        while True:
+            role = input("Möchten Sie selbst raten oder soll der Computer raten? 'Selbst', 'Computer': ").lower()
+            if self.__check_for_ui_command(role):
+                return self.prompt_for_computer_decoder()
+            if role == 'selbst':
+                return False
+            elif role == 'computer':
+                return True
+            else:
+                print("Ungültige Eingabe. Wählen Sie 'Selbst' oder 'Computer': ")
 
-        :return: selected role.
-        """
+    def prompt_for_host_addr(self) -> str:
         while True:
             connection = input("IP und Port? ")
+            if self.__check_for_ui_command(connection):
+                return self.prompt_for_host_addr()
             match = re.match(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d{1,5}$', connection)
             if match:
                 return connection
@@ -83,15 +106,12 @@ class Client(UiControllerInterface, ABC):
                 print("Ungültige Eingabe. Bitte geben Sie eine gültige Adresse ein.")
 
     def prompt_for_code_length(self) -> int:
-        """
-        Prompts the user to set the code length.
-        4 or 5 is valid
-
-        :return: selected length.
-        """
         while True:
             try:
-                code_length = int(input("Bitte Code Länge wählen (4 oder 5): "))
+                user_input = input("Bitte Code Länge wählen (4 oder 5): ")
+                if self.__check_for_ui_command(user_input):
+                    return self.prompt_for_code_length()
+                code_length = int(user_input)
                 if code_length in (4, 5):
                     return code_length
                 else:
@@ -100,72 +120,71 @@ class Client(UiControllerInterface, ABC):
                 print("Ungültige Eingabe. Bitte wählen sie '4' oder '5'.")
 
     def prompt_for_number_of_colors(self) -> int:
-        """
-        Prompts the user to set the amount of colors.
-        2 to 8 is valid
-
-        :return: selected amount.
-        """
         while True:
             try:
-                color_amount = int(input("Anzahl der Farben wählen, 2 bis 8 möglich: "))
-                if 2 <= color_amount <= 8:
-                    return color_amount
+                user_input = input("Anzahl der Farben wählen, 2 bis 8 möglich: ")
+                if self.__check_for_ui_command(user_input):
+                    return self.prompt_for_number_of_colors()
+                number_of_colors = int(user_input)
+                if 2 <= number_of_colors <= 8:
+                    return number_of_colors
                 else:
                     print("Ungültige Eingabe. Bitte wählen Sie eine Zahl zwischen 2 und 8.")
             except ValueError:
                 print("Ungültige Eingabe. Bitte wählen Sie eine Zahl zwischen 2 und 8.")
 
-    def prompt_for_code(self, code_length: int, color_amount: int) -> str:
-        """
-        Prompts the user to set the code.
-        Prints help for available_colors.
+    def prompt_for_code(self, code_length: int, number_of_colors: int) -> Code:
+        color_help = ", ".join(f"{color.name}:{color.value}" for color in list(Color)[:number_of_colors])
+        color_check = "".join(str(color.value) for color in list(Color)[:number_of_colors])
+        print(color_help)
+        code = None
+        while True:
+            try:
+                code = input("Bitte gebe einen Code ein: ")
+                if self.__check_for_ui_command(code):
+                    return self.prompt_for_code(code_length, number_of_colors)
+                if not all(char in color_check for char in code) | len(code) > code_length:
+                    print("Ungültige Eingabe. Bitte geben Sie einen Code aus den verfügbaren Farben ein")
+                else:
+                    break
+            except ValueError:
+                print("Ungültige Eingabe. Bitte geben Sie einen Code aus den verfügbaren Farben ein")
+        print(f"Dieser Code wurde gesetzt:  {code}")
+        colors = []
+        for char in code:
+            colors.append(Color(int(char)))
+        return Code(colors)
 
-        :return: selected code.
-        """
-        color_help = ["Rot=1", "Grün=2", "Gelb=3", "Blau=4", "Orange=5", "Braun=6", "Weiss=7", "Schwarz=8"]
-        available_colors = color_help[:color_amount]
-        print(available_colors)
-        code = ""
-        for i in range(code_length):
-            while True:
-                try:
-                    element = int(input(f"Farbe an Stelle {i + 1} von {code_length}: "))
-                    if 1 <= element <= color_amount:
-                        code = code + str(element)
-                        break
-                    else:
-                        print(f"Ungültige Eingabe. Bitte wählen Sie eine Zahl zwischen 1 und {color_amount}.")
-                except ValueError:
-                    print(f"Ungültige Eingabe. Bitte wählen Sie eine Zahl zwischen 1 und {color_amount}.")
-        print(f"Der Code wurde gesetzt:  {code}")
-        return code
+    def prompt_for_guess(self, code_length: int, number_of_colors: int) -> Code:
+        color_help = ", ".join(f"{color.name}:{color.value}" for color in list(Color)[:number_of_colors])
+        color_check = "".join(str(color.value) for color in list(Color)[:number_of_colors])
+        print(color_help)
+        guess = None
+        while True:
+            try:
+                guess = input("Bitte gebe eine Frage ein: ")
+                if self.__check_for_ui_command(guess):
+                    return self.prompt_for_guess(code_length, number_of_colors)
+                if not all(char in color_check for char in guess) | len(guess) != code_length:
+                    print("Ungültige Eingabe. Bitte geben Sie eine Frage aus den verfügbaren Farben ein")
+                else:
+                    break
+            except ValueError:
+                print("Ungültige Eingabe. Bitte geben Sie eine Frage aus den verfügbaren Farben ein")
+        print(f"Diese Frage wurde eingegeben:  {guess}")
+        colors = []
+        for char in guess:
+            colors.append(Color(int(char)))
+        return Code(colors)
 
-    def prompt_for_guess(self, code_length: int, color_amount: int) -> str:
-        color_help = ["Rot=1", "Grün=2", "Gelb=3", "Blau=4", "Orange=5", "Braun=6", "Weiss=7", "Schwarz=8"]
-        available_colors = color_help[:color_amount]
-        print(available_colors)
-        guess = ""
-        for i in range(code_length):
-            while True:
-                try:
-                    element = int(input(f"Farbe an Stelle {i + 1} von {code_length}: "))
-                    if 1 <= element <= color_amount:
-                        guess = guess + str(element)
-                        break
-                    else:
-                        print(f"Ungültige Eingabe. Bitte wählen Sie eine Zahl zwischen 1 und {color_amount}.")
-                except ValueError:
-                    print(f"Ungültige Eingabe. Bitte wählen Sie eine Zahl zwischen 1 und {color_amount}.")
-        print(f"Der Code wurde geraten:  {guess}")
-        return guess
-
-    def prompt_for_rating(self, code_length: int) -> str:
+    def prompt_for_rating(self, code_length: int) -> Rating:
         color_help = ["Weiss=7", "Schwarz=8"]
         print(color_help)
         while True:
             try:
                 rating = input("Rating: ")
+                if self.__check_for_ui_command(rating):
+                    return self.prompt_for_rating(code_length)
                 if not all(char in '78' for char in rating) | len(rating) > code_length:
                     print("Ungültige Eingabe. Bitte geben Sie ein leeres Rating oder ein Rating aus 7/8 ein")
                 else:
@@ -173,7 +192,7 @@ class Client(UiControllerInterface, ABC):
             except ValueError:
                 print("Ungültige Eingabe. Bitte geben Sie die 7, 8 oder Nichts")
         print(f"Diese Feedback wurde gegeben:  {rating}")
-        return rating
-
-    def clear_screen(self):
-        os.system('cls' if os.name == 'nt' else 'clear')
+        colors = []
+        for char in rating:
+            colors.append(Color(int(char)))
+        return Rating(colors)

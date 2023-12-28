@@ -1,9 +1,9 @@
 import unittest
 
-from superhirn.data.code import Code
-from superhirn.data.color import Color
 from superhirn.logic.encoder.encoder_interface import EncoderInterface
 from superhirn.logic.encoder.local_encoder import LocalEncoder
+from superhirn.logic.util.code import Code
+from superhirn.logic.util.color import Color
 
 
 class LocalEncoderTestCase(unittest.TestCase):

@@ -1,4 +1,4 @@
-from superhirn.data.color import Color
+from superhirn.logic.util.color import Color
 
 
 def color_string_to_list(color_string: str) -> list[Color]:

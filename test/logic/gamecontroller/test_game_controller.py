@@ -1,7 +1,7 @@
 import unittest
 
-from superhirn.data.color import Color
 from superhirn.logic.gamecontroller.game_controller import color_string_to_list
+from superhirn.logic.util.color import Color
 
 
 class GameControllerTestCase(unittest.TestCase):

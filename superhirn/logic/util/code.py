@@ -1,4 +1,4 @@
-from superhirn.data.color import Color
+from superhirn.logic.util.color import Color
 
 
 class Code:

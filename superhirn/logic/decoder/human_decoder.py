@@ -1,7 +1,7 @@
-from superhirn.data.code import Code
 from superhirn.logic import color_string_to_list
 from superhirn.logic.connector.ui_controller_interface import UiControllerInterface
 from superhirn.logic.decoder.decoder_interface import DecoderInterface
+from superhirn.logic.util.code import Code
 
 
 class HumanDecoder(DecoderInterface):

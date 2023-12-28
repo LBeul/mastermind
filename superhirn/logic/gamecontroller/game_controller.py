@@ -11,7 +11,6 @@ from superhirn.logic.encoder.human_encoder import HumanEncoder
 from superhirn.logic.encoder.local_encoder import LocalEncoder
 from superhirn.logic.encoder.network_encoder import NetworkEncoder
 from superhirn.logic.gamecontroller.game_controller_interface import GameControllerInterface
-from superhirn.view.client import Client
 
 
 def singleton(cls):
@@ -35,34 +34,6 @@ class GameController(GameControllerInterface):
         self._encoder: Optional[EncoderInterface] = None
         self._decoder: Optional[DecoderInterface] = None
 
-    def main_loop(self):
-        ui = Client()
-        ui.show_menu()
-        while True:
-            if self._setup_completed:
-                self.game_loop(ui)
-                break
-            command = input("Befehl: ").lower()
-            if command == 'help':
-                ui.show_help()
-            elif command == 'start':
-                ui.clear_screen()
-                self.setup(ui)
-            elif command == 'exit':
-                exit()
-            else:
-                print("Ungültige Eingabe.")
-
-    def game_loop(self, ui: UiControllerInterface):
-        self._encoder.generate_code(self._game_data.get_code_length(), self._game_data.get_number_of_colors())
-        for i in range(10):
-            ui.clear_screen()
-            ui.show_game_view(self._game_data.get_questions(), self._game_data.get_ratings(), self._role,
-                              str(self._game_data.get_code()))
-            self._game_data.add_question(
-                self._decoder.guess(self._game_data.get_code_length(), self._game_data.get_number_of_colors()))
-            self._game_data.add_rating(self._encoder.rate(self._game_data.get_code()))
-
     def setup(self, ui: UiControllerInterface):
         if self._setup_completed:
             raise Exception("Fehler: Spiel wurde schon gestartet!")
@@ -72,9 +43,9 @@ class GameController(GameControllerInterface):
             self._encoder = HumanEncoder(ui)
             self._role = "codierer"
         elif role.lower() == "rater":
-            if ui.prompt_for_encoder() == "Netzwerk":
-                host = ui.prompt_for_connection()
-                decoder_mode = ui.prompt_for_decoder()
+            if ui.prompt_for_network_encoder() == "Netzwerk":
+                host = ui.prompt_for_host_addr()
+                decoder_mode = ui.prompt_for_computer_decoder()
                 if decoder_mode == "Selbst":
                     self._encoder = NetworkEncoder(host)
                     self._decoder = HumanDecoder(ui)
@@ -97,6 +68,3 @@ class GameController(GameControllerInterface):
         self._game_data.set_code(code)
 
         self._setup_completed = True
-
-    def get_data(self) -> DataControllerInterface:
-        return self._game_data

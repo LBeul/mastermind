@@ -1,8 +1,8 @@
-from superhirn.data.code import Code
-from superhirn.data.rating import Rating
 from superhirn.logic import color_string_to_list
 from superhirn.logic.connector.ui_controller_interface import UiControllerInterface
 from superhirn.logic.encoder.encoder_interface import EncoderInterface
+from superhirn.logic.util.code import Code
+from superhirn.logic.util.rating import Rating
 
 
 class HumanEncoder(EncoderInterface):

@@ -1,7 +1,7 @@
 import random
 
-from superhirn.data.code import Code
 from superhirn.logic.decoder.decoder_interface import DecoderInterface
+from superhirn.logic.util.code import Code
 
 
 class LocalDecoder(DecoderInterface):

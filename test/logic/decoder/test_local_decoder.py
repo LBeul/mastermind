@@ -1,9 +1,9 @@
 import unittest
 
-from superhirn.data.code import Code
-from superhirn.data.color import Color
 from superhirn.logic.decoder.decoder_interface import DecoderInterface
 from superhirn.logic.decoder.local_decoder import LocalDecoder
+from superhirn.logic.util.code import Code
+from superhirn.logic.util.color import Color
 
 
 class LocalDecoderTestCase(unittest.TestCase):

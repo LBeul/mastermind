@@ -1,9 +1,9 @@
 import unittest
 
-from superhirn.data.code import Code
-from superhirn.data.color import Color
 from superhirn.data.game import Game
-from superhirn.data.rating import Rating
+from superhirn.logic.util.code import Code
+from superhirn.logic.util.color import Color
+from superhirn.logic.util.rating import Rating
 
 
 class TestSimple(unittest.TestCase):
@@ -24,8 +24,8 @@ class TestSimple(unittest.TestCase):
         game.add_rating(given_rating=rating)
         self.assertIsNotNone(game.ratings)
 
- #  def test_count_white(self):
- #     code = [Color.WHITE, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE]
- #     rating = Rating(code)
- #    count = rating.count_white()
- #   self.assertEqual(3, count)
+#  def test_count_white(self):
+#     code = [Color.WHITE, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE]
+#     rating = Rating(code)
+#    count = rating.count_white()
+#   self.assertEqual(3, count)

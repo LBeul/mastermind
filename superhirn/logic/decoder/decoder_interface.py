@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from superhirn.data.code import Code
+from superhirn.logic.util.code import Code
 
 
 class DecoderInterface(ABC):
