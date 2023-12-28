@@ -34,7 +34,6 @@ class Client(UiControllerInterface, ABC):
         """
         Shows the help page.
         """
-        self.__clear_screen()
         print("--------------------------------------------------")
         print("Spielanleitung")
         print("--------------------------------------------------")
