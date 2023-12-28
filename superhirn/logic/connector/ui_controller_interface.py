@@ -109,3 +109,10 @@ class UiControllerInterface(ABC):
         :param win: True for win, false for defeat.
         """
         pass
+
+    @abstractmethod
+    def show_start_screen(self):
+        """
+        Shows the start screen for the player.
+        """
+        pass

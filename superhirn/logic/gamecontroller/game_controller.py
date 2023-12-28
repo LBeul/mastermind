@@ -28,6 +28,7 @@ class GameController(GameControllerInterface):
     def setup(self, ui: UiControllerInterface, game_data: DataControllerInterface):
         self._ui = ui
         self._game_data = game_data
+        ui.show_start_screen()
         if self._setup_completed:
             raise Exception("Fehler: Spiel wurde schon gestartet!")
         self._role = ui.prompt_for_role()
@@ -60,6 +61,8 @@ class GameController(GameControllerInterface):
         win = False
         code = self._encoder.generate_code()
         self._game_data.set_code(code)
+        self._ui.update_board(self._game_data.get_questions(), self._game_data.get_ratings(), self._role,
+                              self._game_data.get_code())
         while self._turn_counter <= self._max_turns and win is False:
             self._turn_counter += 1
             guess = self._decoder.guess()

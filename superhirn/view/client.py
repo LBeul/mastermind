@@ -174,7 +174,7 @@ class Client(UiControllerInterface, ABC):
         guess = None
         while True:
             try:
-                guess = input("Bitte gebe eine Frage ein: ")
+                guess = input("Bitte geben Sie eine Frage ein: ")
                 if self.__check_for_ui_command(guess):
                     return self.prompt_for_guess(code_length, number_of_colors)
                 if not all(char in color_check for char in guess) or len(guess) != code_length:
@@ -183,7 +183,6 @@ class Client(UiControllerInterface, ABC):
                     break
             except ValueError:
                 print("Ungültige Eingabe. Bitte geben Sie eine Frage aus den verfügbaren Farben ein")
-        print(f"Diese Frage wurde eingegeben:  {guess}")
         colors = []
         for char in guess:
             colors.append(Color(int(char)))
@@ -203,7 +202,6 @@ class Client(UiControllerInterface, ABC):
                     break
             except ValueError:
                 print("Ungültige Eingabe. Bitte geben Sie die 7, 8 oder Nichts")
-        print(f"Diese Feedback wurde gegeben:  {rating}")
         colors = []
         for char in rating:
             colors.append(Color(int(char)))
@@ -214,3 +212,14 @@ class Client(UiControllerInterface, ABC):
             print("Gewonnen", code)
         else:
             print("Verloren", code)
+
+    def show_start_screen(self):
+        self.__clear_screen()
+        print("--------------------------------------------------")
+        print("Willkommen zu Super Super Hirn")
+        print("--------------------------------------------------")
+        print("'help' zum Anzeigen der Spielanleitung")
+        print("'exit' zum Beenden")
+        print("--------------------------------------------------")
+        print("Das Spiel beginnt automatisch")
+        print("")

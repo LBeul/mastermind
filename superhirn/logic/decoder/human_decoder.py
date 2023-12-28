@@ -14,7 +14,6 @@ class HumanDecoder(DecoderInterface):
         return self._game_data
 
     def guess(self) -> Code:
-        print("Sie dürfen raten:")
         code = self._ui.prompt_for_guess(self._game_data.get_code_length(),
                                          self._game_data.get_number_of_colors())
         return code
