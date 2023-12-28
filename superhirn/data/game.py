@@ -1,9 +1,9 @@
 from superhirn.data.code import Code
-from superhirn.data.data_interface import DataInterface
 from superhirn.data.rating import Rating
+from superhirn.logic.connector.data_controller_interface import DataControllerInterface
 
 
-class Game(DataInterface):
+class Game(DataControllerInterface):
     code = None
     code_length = None
     color_availabilities = None
@@ -22,14 +22,20 @@ class Game(DataInterface):
     def get_code_length(self) -> int:
         return self.code_length
 
-    def set_color_availabilities(self, given_color_availabilities):
-        self.color_availabilities = given_color_availabilities
+    def set_number_of_colors(self, given_number_of_colors):
+        self.color_availabilities = given_number_of_colors
 
-    def get_color_availabilities(self) -> int:
+    def get_number_of_colors(self) -> int:
         return self.color_availabilities
 
     def add_question(self, given_question: Code):
         self.questions.append(given_question)
 
+    def get_questions(self):
+        return self.questions
+
     def add_rating(self, given_rating: Rating):
         self.ratings.append(given_rating)
+
+    def get_ratings(self):
+        return self.ratings

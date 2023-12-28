@@ -1,44 +1,48 @@
 import os
 import re
+from abc import ABC
 
-from superhirn.logic.ui_connector.ui_connector_interface import UiControllerInterface
-from superhirn.view.main_menu_view import MainMenuView
-from superhirn.view.manual_view import ManualView
+from superhirn.logic.connector.ui_controller_interface import UiControllerInterface
+from superhirn.view.game_view import GameView
 
 
-class Client(UiControllerInterface):
+class Client(UiControllerInterface, ABC):
 
     def show_help(self):
-        manual_view = ManualView()
-        self.clear_screen()
-        manual_view.print_manual()
+        print("--------------------------------------------------")
+        print("Spielanleitung")
+        print("--------------------------------------------------")
+        print("Anleitung 1,2,3")
+        print("--------------------------------------------------")
+        print("'help' zum Anzeigen der Spielanleitung")
+        print("'start' zum Spielstart oder Neustart")
+        print("'exit' zum Beenden")
+        print("--------------------------------------------------")
 
-    def show_menu(self) -> str:
-        main_menu_view = MainMenuView()
-        self.clear_screen()
-        main_menu_view.print_main_menu()
-        command = input().lower()
-        if command == 'start':
-            return "start"
-        elif command == 'help':
-            return "help"
-        elif command == 'exit':
-            return "exit"
-        else:
-            print("Ungültige Eingabe")
-        return command
+    def show_main_menu(self):
+        print("--------------------------------------------------")
+        print("Super Super Hirn")
+        print("--------------------------------------------------")
+        print("'help' zum Anzeigen der Spielanleitung")
+        print("'start' zum Spielstart oder Neustart")
+        print("'exit' zum Beenden")
+        print("--------------------------------------------------")
 
-    def prompt_for_role(self) -> str:
-        while True:
-            role = input("Wählen Sie eine Rolle 'Codierer' oder 'Rater': ").lower()
-            if role == 'rater':
-                return 'Rater'
-            elif role == 'codierer':
-                return 'Codierer'
-            else:
-                print("Ungültige Eingabe. Wählen Sie eine Rolle 'Codierer' oder 'Rater': ")
+    def show_game_view(self, questions: list, ratings: list, role: str, code: str):
+        game_view = GameView()
+        game_view.print_game_board(questions, ratings, role, code)
 
-    def prompt_for_decoder_mode(self) -> str:
+        def prompt_for_role(self) -> str:
+            while True:
+                role = input("Wählen Sie eine Rolle 'Codierer' oder 'Rater': ").lower()
+                if role == 'rater':
+                    return 'Rater'
+                elif role == 'codierer':
+                    return 'Codierer'
+                else:
+                    print("Ungültige Eingabe. Wählen Sie eine Rolle 'Codierer' oder 'Rater': ")
+
+    def prompt_for_decoder(self) -> str:
         while True:
             role = input("Möchten Sie selbst raten oder soll der Computer raten? 'Selbst', 'Computer': ").lower()
             if role == 'selbst':
@@ -48,7 +52,7 @@ class Client(UiControllerInterface):
             else:
                 print("Ungültige Eingabe. Wählen Sie 'Selbst' oder 'Computer': ")
 
-    def prompt_for_encoder_mode(self) -> str:
+    def prompt_for_encoder(self) -> str:
         """
         Prompts the user to select the encoder type.
 
@@ -96,7 +100,7 @@ class Client(UiControllerInterface):
             except ValueError:
                 print("Ungültige Eingabe. Bitte wählen sie '4' oder '5'.")
 
-    def prompt_for_color_amount(self) -> int:
+    def prompt_for_number_of_colors(self) -> int:
         """
         Prompts the user to set the amount of colors.
         2 to 8 is valid
@@ -175,7 +179,4 @@ class Client(UiControllerInterface):
         return rating
 
     def clear_screen(self):
-        """
-        Cleans the terminal screen.
-        """
         os.system('cls' if os.name == 'nt' else 'clear')

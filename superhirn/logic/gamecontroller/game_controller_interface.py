@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
-from superhirn.logic.ui_connector.ui_connector_interface import UiControllerInterface
+from superhirn.logic.connector.data_controller_interface import DataControllerInterface
+from superhirn.logic.connector.ui_controller_interface import UiControllerInterface
 
 
 class GameControllerInterface(ABC):
