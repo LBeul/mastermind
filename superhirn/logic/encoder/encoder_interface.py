@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 from superhirn.data.code import Code
+from superhirn.data.rating import Rating
 
 
 class EncoderInterface(ABC):
@@ -15,7 +16,7 @@ class EncoderInterface(ABC):
         pass
 
     @abstractmethod
-    def rate(self, code_guess: Code) -> Code:
+    def rate(self, code_guess: Code) -> Rating:
         """
         Rates a code attempt by comparing it to the actual code and giving color-coded feedback:
         - BLACK values for each right guess (position and color)

@@ -14,11 +14,20 @@ from superhirn.logic.gamecontroller.game_controller_interface import GameControl
 from superhirn.view.client import Client
 
 
-def color_string_to_list(color_string: str) -> list[Color]:
-    return [Color(int(val)) for val in color_string]
+def singleton(cls):
+    instances = {}
+
+    def get_instance(*args, **kwargs):
+        if cls not in instances:
+            instances[cls] = cls(*args, **kwargs)
+        return instances[cls]
+
+    return get_instance
 
 
+@singleton
 class GameController(GameControllerInterface):
+
     def __init__(self):
         self._role = None
         self._setup_completed = False

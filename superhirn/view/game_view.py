@@ -1,5 +1,6 @@
 class GameView:
-    def print_game_board(questions: list, ratings: list, role: str, code: str):
+
+    def print_game_board(self, questions: list, ratings: list, role: str, code: str):
         """
         Prints the current game-board.
         """

@@ -93,7 +93,6 @@ class Client(UiControllerInterface, ABC):
             try:
                 code_length = int(input("Bitte Code Länge wählen (4 oder 5): "))
                 if code_length in (4, 5):
-                    self.code_length = code_length  # temp als Mock
                     return code_length
                 else:
                     print("Ungültige Eingabe. Bitte wählen Sie 4 oder 5.")
@@ -111,7 +110,6 @@ class Client(UiControllerInterface, ABC):
             try:
                 color_amount = int(input("Anzahl der Farben wählen, 2 bis 8 möglich: "))
                 if 2 <= color_amount <= 8:
-                    self.color_amount = color_amount  # temp als Mock
                     return color_amount
                 else:
                     print("Ungültige Eingabe. Bitte wählen Sie eine Zahl zwischen 2 und 8.")
@@ -141,7 +139,6 @@ class Client(UiControllerInterface, ABC):
                 except ValueError:
                     print(f"Ungültige Eingabe. Bitte wählen Sie eine Zahl zwischen 1 und {color_amount}.")
         print(f"Der Code wurde gesetzt:  {code}")
-        self.code = code
         return code
 
     def prompt_for_guess(self, code_length: int, color_amount: int) -> str:

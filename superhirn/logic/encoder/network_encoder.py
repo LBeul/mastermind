@@ -1,4 +1,5 @@
 from superhirn.data.code import Code
+from superhirn.data.rating import Rating
 from superhirn.logic.encoder.encoder_interface import EncoderInterface
 
 
@@ -10,5 +11,5 @@ class NetworkEncoder(EncoderInterface):
     def generate_code(self, code_length: int, color_availabilities: int) -> Code:
         pass
 
-    def rate(self, code_guess):
+    def rate(self, code_guess) -> Rating:
         pass
