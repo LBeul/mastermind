@@ -100,3 +100,12 @@ class UiControllerInterface(ABC):
         :return: given rating.
         """
         pass
+
+    @abstractmethod
+    def show_end_screen(self, win: bool, code: Code):
+        """
+        Shows the end screen for the player.
+        :param code: Code of the current game.
+        :param win: True for win, false for defeat.
+        """
+        pass

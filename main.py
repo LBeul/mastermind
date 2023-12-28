@@ -7,3 +7,4 @@ if __name__ == '__main__':
     ui = Client()
     game_data = Game()
     controller.setup(ui, game_data)
+    controller.start()

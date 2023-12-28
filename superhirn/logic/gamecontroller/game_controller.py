@@ -16,22 +16,25 @@ from superhirn.logic.util.role import Role
 class GameController(GameControllerInterface):
 
     def __init__(self):
-        self.ui = None
+        self._ui = None
         self._setup_completed = False
         self._game_data = None
         self._encoder: Optional[EncoderInterface] = None
         self._decoder: Optional[DecoderInterface] = None
+        self._max_turns = 10
+        self._turn_counter = 1
+        self._role = None
 
     def setup(self, ui: UiControllerInterface, game_data: DataControllerInterface):
-        self.ui = ui
+        self._ui = ui
         self._game_data = game_data
         if self._setup_completed:
             raise Exception("Fehler: Spiel wurde schon gestartet!")
-        role = ui.prompt_for_role()
-        if role == Role.ENCODER:
+        self._role = ui.prompt_for_role()
+        if self._role == Role.ENCODER:
             self._decoder = LocalDecoder(game_data)
             self._encoder = HumanEncoder(ui, game_data)
-        elif role == Role.DECODER:
+        elif self._role == Role.DECODER:
 
             if ui.prompt_for_network_encoder():
                 host = ui.prompt_for_host_addr()
@@ -49,7 +52,27 @@ class GameController(GameControllerInterface):
         number_of_colors = ui.prompt_for_number_of_colors()
         self._game_data.set_number_of_colors(number_of_colors)
 
+        self._setup_completed = True
+
+    def start(self):
+        if not self._setup_completed:
+            raise Exception("Fehler: Spiel wurde noch nicht initialisiert")
+        win = False
         code = self._encoder.generate_code()
         self._game_data.set_code(code)
+        while self._turn_counter <= self._max_turns and win is False:
+            self._turn_counter += 1
+            guess = self._decoder.guess()
+            self._game_data.add_question(guess)
+            self._ui.update_board(self._game_data.get_questions(), self._game_data.get_ratings(), self._role,
+                                  self._game_data.get_code())
 
-        self._setup_completed = True
+            rating = self._encoder.rate(guess)
+            self._game_data.add_rating(rating)
+            self._ui.update_board(self._game_data.get_questions(), self._game_data.get_ratings(), self._role,
+                                  self._game_data.get_code())
+
+            if rating.count_blacks() == self._game_data.get_code_length():
+                win = True
+
+        self._ui.show_end_screen(win, self._game_data.get_code())

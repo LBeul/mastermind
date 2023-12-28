@@ -17,7 +17,7 @@ class LocalEncoder(EncoderInterface):
 
     def generate_code(self) -> Code:
         number_array = list(range(1, self._game_data.get_number_of_colors() + 1))
-        random_colors = [random.choice(number_array)
+        random_colors = [Color(random.choice(number_array))
                          for __ in range(self._game_data.get_code_length())]
         return Code(random_colors)
 
@@ -26,11 +26,11 @@ class LocalEncoder(EncoderInterface):
         goal: str = self._game_data.get_code().to_int_string()
 
         black = 0
-        white = len(set(guess) & set(goal)) - black
 
         for x in range(self._game_data.get_code_length()):
             if guess[x] == goal[x]:
                 black += 1
 
+        white = len(set(guess) & set(goal)) - black
         rating = ([Color.BLACK] * black) + ([Color.WHITE] * white)
         return Rating(rating)

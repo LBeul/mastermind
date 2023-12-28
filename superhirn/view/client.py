@@ -34,6 +34,7 @@ class Client(UiControllerInterface, ABC):
         """
         Shows the help page.
         """
+        self.__clear_screen()
         print("--------------------------------------------------")
         print("Spielanleitung")
         print("--------------------------------------------------")
@@ -43,19 +44,30 @@ class Client(UiControllerInterface, ABC):
         print("'exit' zum Beenden")
         print("--------------------------------------------------")
 
-    def update_board(self, questions: list, ratings: list, role: str, code: str):
-        questions.reverse()
-        ratings.reverse()
-        output = zip(questions, ratings)
+    def update_board(self, questions: list[Code], ratings: list[Rating], role: Role, code: Code):
+        self.__clear_screen()
+
+        questions_copy = questions[:]
+        ratings_copy = ratings[:]
+
+        max_length = max(len(questions_copy), len(ratings_copy))
+        questions_copy += [''] * (max_length - len(questions_copy))
+        ratings_copy += [''] * (max_length - len(ratings_copy))
+
+        questions_copy.reverse()
+        ratings_copy.reverse()
+
         print("Spielfeld")
         print("--------------------------------------------------")
-        if role == "Codierer":
-            print("Code: " + code)
+        if role == Role.ENCODER:
+            print("Code: " + code.__str__())
         else:
-            print("Code: XXXXX")
+            code_length = code.get_length()
+            string_x = 'X' * code_length
+            print("Code: " + string_x)
         print("")
-        for item1, item2 in output:
-            print(item1, "|", item2)
+        for question, rating in zip(questions_copy, ratings_copy):
+            print(f"{question} | {rating}")
         print("--------------------------------------------------")
 
     def prompt_for_role(self) -> Role:
@@ -143,7 +155,7 @@ class Client(UiControllerInterface, ABC):
                 code = input("Bitte gebe einen Code ein: ")
                 if self.__check_for_ui_command(code):
                     return self.prompt_for_code(code_length, number_of_colors)
-                if not all(char in color_check for char in code) | len(code) > code_length:
+                if not all(char in color_check for char in code) or len(code) > code_length:
                     print("Ungültige Eingabe. Bitte geben Sie einen Code aus den verfügbaren Farben ein")
                 else:
                     break
@@ -165,7 +177,7 @@ class Client(UiControllerInterface, ABC):
                 guess = input("Bitte gebe eine Frage ein: ")
                 if self.__check_for_ui_command(guess):
                     return self.prompt_for_guess(code_length, number_of_colors)
-                if not all(char in color_check for char in guess) | len(guess) != code_length:
+                if not all(char in color_check for char in guess) or len(guess) != code_length:
                     print("Ungültige Eingabe. Bitte geben Sie eine Frage aus den verfügbaren Farben ein")
                 else:
                     break
@@ -185,7 +197,7 @@ class Client(UiControllerInterface, ABC):
                 rating = input("Rating: ")
                 if self.__check_for_ui_command(rating):
                     return self.prompt_for_rating(code_length)
-                if not all(char in '78' for char in rating) | len(rating) > code_length:
+                if not all(char in '78' for char in rating) or len(rating) > code_length:
                     print("Ungültige Eingabe. Bitte geben Sie ein leeres Rating oder ein Rating aus 7/8 ein")
                 else:
                     break
@@ -196,3 +208,9 @@ class Client(UiControllerInterface, ABC):
         for char in rating:
             colors.append(Color(int(char)))
         return Rating(colors)
+
+    def show_end_screen(self, win: bool, code: Code):
+        if win:
+            print("Gewonnen", code)
+        else:
+            print("Verloren", code)

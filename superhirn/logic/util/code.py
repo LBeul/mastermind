@@ -4,7 +4,7 @@ from superhirn.logic.util.color import Color
 class Code:
 
     def __init__(self, colors: list[Color]):
-        self.colors = colors
+        self._colors = colors
 
     def get_color_at(self, number: int) -> Color:
         """
@@ -12,14 +12,14 @@ class Code:
         :param number: Index of color in array
         :return: Color object
         """
-        return self.colors[number]
+        return self._colors[number]
 
     def to_int_list(self):
         """
         Return code in list format containing the int values of the color enum
         :return: List containing the color values
         """
-        return [c.value for c in self.colors]
+        return [c.value for c in self._colors]
 
     def to_int_string(self) -> str:
         """
@@ -34,7 +34,7 @@ class Code:
         Returns length of current code.
         :return: code length as an integer.
         """
-        return len(self.colors)
+        return len(self._colors)
 
     def __str__(self):
         """
@@ -42,3 +42,10 @@ class Code:
         :return: string containing the colors of the code
         """
         return self.to_int_list().__str__()
+
+    def get_colors(self) -> list[Color]:
+        """
+        Returns the list of colors.
+        :return: List of colors.
+        """
+        return self._colors
