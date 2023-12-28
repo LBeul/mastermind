@@ -5,6 +5,12 @@ from superhirn.logic.util.rating import Rating
 
 
 class EncoderInterface(ABC):
+
+    @property
+    @abstractmethod
+    def game_data(self):
+        pass
+
     @abstractmethod
     def generate_code(self) -> Code:
         """

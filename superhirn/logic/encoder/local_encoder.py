@@ -8,11 +8,15 @@ from superhirn.logic.util.rating import Rating
 
 
 class LocalEncoder(EncoderInterface):
-    def __init__(self):
-        self._generated_code = None
+    def __init__(self, game_data: DataControllerInterface):
+        self._game_data = game_data
 
-    def generate_code(self, code_length: int, color_availabilities: int) -> Code:
-        number_array = list(range(1, color_availabilities + 1))
+    @property
+    def game_data(self):
+        return self._game_data
+
+    def generate_code(self) -> Code:
+        number_array = list(range(1, self._game_data.get_number_of_colors() + 1))
         random_colors = [random.choice(number_array)
                          for __ in range(self._game_data.get_code_length())]
         return Code(random_colors)

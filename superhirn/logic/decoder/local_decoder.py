@@ -6,8 +6,13 @@ from superhirn.logic.util.code import Code
 
 
 class LocalDecoder(DecoderInterface):
-    def __init__(self):
+    def __init__(self, game_data: DataControllerInterface):
         self._attempts: list[Code] = []
+        self._game_data = game_data
+
+    @property
+    def game_data(self):
+        return self._game_data
 
     def guess(self):
         number_array = list(range(1, self._game_data.get_number_of_colors() + 1))

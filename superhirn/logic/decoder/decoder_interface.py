@@ -4,12 +4,16 @@ from superhirn.logic.util.code import Code
 
 
 class DecoderInterface(ABC):
+
+    @property
     @abstractmethod
-    def guess(self, code_length: int, color_availabilities: int) -> Code:
+    def game_data(self):
+        pass
+
+    @abstractmethod
+    def guess(self) -> Code:
         """
         Generates a code guess of the given length, using the available colors
-        :param code_length: Length of the new guess.
-        :param color_availabilities: number of colors of the new guess.
         :return: the newly generated Code instance
         """
         pass

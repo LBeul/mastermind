@@ -6,9 +6,13 @@ from superhirn.logic.util.rating import Rating
 
 
 class HumanEncoder(EncoderInterface):
-    def __init__(self, ui: UiControllerInterface):
+    def __init__(self, ui: UiControllerInterface, game_data: DataControllerInterface):
         self._ui = ui
-        self._generated_code = None
+        self._game_data = game_data
+
+    @property
+    def game_data(self):
+        return self._game_data
 
     def generate_code(self) -> Code:
         code = self._ui.prompt_for_code(self._game_data.get_code_length(), self._game_data.get_number_of_colors())
