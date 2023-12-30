@@ -1,10 +1,10 @@
 from abc import abstractmethod
 
-from superhirn.data.code import Code
-from superhirn.data.rating import Rating
+from superhirn.logic.util.code import Code
+from superhirn.logic.util.rating import Rating
 
 
-class DataInterface:
+class DataControllerInterface:
 
     @abstractmethod
     def set_code(self, given_code: Code):
@@ -39,18 +39,18 @@ class DataInterface:
         pass
 
     @abstractmethod
-    def set_color_availabilities(self, given_color_availabilities):
+    def set_number_of_colors(self, given_number_of_colors):
         """
-        Sets the amount of colors, which will be used in the game
-        :param given_color_availabilities: Amount of colors as int
+        Sets the amount of colors, which will be used in the game.
+        :param given_number_of_colors: Amount of colors as int.
         """
         pass
 
     @abstractmethod
-    def get_color_availabilities(self) -> int:
+    def get_number_of_colors(self) -> int:
         """
-        Gets the amount of colors, which will be used in the game
-        :return: Amount of colors as int
+        Gets the amount of colors, which will be used in the game.
+        :return: Amount of colors as int.
         """
         pass
 
@@ -58,14 +58,30 @@ class DataInterface:
     def add_question(self, given_question: Code):
         """
         Adds a question to the list
-        :param given_question: Code which will be added
+        :param given_question: Code which will be added.
+        """
+        pass
+
+    @abstractmethod
+    def get_questions(self) -> list[Code]:
+        """
+        Gets the questions.
+        :return: All questions.
         """
         pass
 
     @abstractmethod
     def add_rating(self, given_rating: Rating):
         """
-         Adds a rating to the list
-         :param given_rating: Code which will be added
-         """
+        Adds a rating to the list.
+        :param given_rating: Code which will be added.
+        """
+        pass
+
+    @abstractmethod
+    def get_ratings(self) -> list[Rating]:
+        """
+        Gets the ratings.
+        :return: All ratings.
+        """
         pass

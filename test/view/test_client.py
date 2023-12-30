@@ -75,7 +75,7 @@ class ClientTest(unittest.TestCase):
         Test prompt_for_encoder with valid input
         :param mock_input:
         """
-        result = self.client.prompt_for_encoder_mode()
+        result = self.client.prompt_for_network_encoder()
         self.assertEqual(result, 'Netzwerk')
 
     @patch('builtins.input', side_effect=['Lokal'])
@@ -84,7 +84,7 @@ class ClientTest(unittest.TestCase):
         Test prompt_for_encoder with valid input
         :param mock_input:
         """
-        result = self.client.prompt_for_encoder_mode()
+        result = self.client.prompt_for_network_encoder()
         self.assertEqual(result, 'Lokal')
 
     @patch('builtins.input', side_effect=['Network', 'Netzwerk'])
@@ -93,7 +93,7 @@ class ClientTest(unittest.TestCase):
         Test prompt_for_encoder with invalid input than with valid input
         :param mock_input:
         """
-        result = self.client.prompt_for_encoder_mode()
+        result = self.client.prompt_for_network_encoder()
         self.assertEqual(result, 'Netzwerk')
 
     @patch('builtins.input', side_effect=['local', 'Lokal'])
@@ -102,7 +102,7 @@ class ClientTest(unittest.TestCase):
         Test prompt_for_encoder with invalid input than with valid input
         :param mock_input:
         """
-        result = self.client.prompt_for_encoder_mode()
+        result = self.client.prompt_for_network_encoder()
         self.assertEqual(result, 'Lokal')
 
     @patch('builtins.input', side_effect=['', 'Netzwerk'])
@@ -111,7 +111,7 @@ class ClientTest(unittest.TestCase):
         Test prompt_for_encoder with invalid input than with valid input
         :param mock_input:
         """
-        result = self.client.prompt_for_encoder_mode()
+        result = self.client.prompt_for_network_encoder()
         self.assertEqual(result, 'Netzwerk')
 
     @patch('builtins.input', side_effect=['', 'Lokal'])
@@ -120,7 +120,7 @@ class ClientTest(unittest.TestCase):
         Test prompt_for_encoder with invalid input than with valid input
         :param mock_input:
         """
-        result = self.client.prompt_for_encoder_mode()
+        result = self.client.prompt_for_network_encoder()
         self.assertEqual(result, 'Lokal')
 
     @patch('builtins.input', side_effect=['127.0.0.1:8080'])
@@ -129,7 +129,7 @@ class ClientTest(unittest.TestCase):
         Test prompt_for_connection with valid input
         :param mock_input:
         """
-        result = self.client.prompt_for_connection()
+        result = self.client.prompt_for_host_addr()
         self.assertEqual(result, '127.0.0.1:8080')
 
     @patch('builtins.input', side_effect=['MeinSpielNetwork', '127.0.0.1:8080'])
@@ -138,7 +138,7 @@ class ClientTest(unittest.TestCase):
         Test prompt_for_connection with invalid input than with valid input
         :param mock_input:
         """
-        result = self.client.prompt_for_connection()
+        result = self.client.prompt_for_host_addr()
         self.assertEqual(result, '127.0.0.1:8080')
 
     @patch('builtins.input', side_effect=['', '127.0.0.1:8080'])
@@ -147,7 +147,7 @@ class ClientTest(unittest.TestCase):
         Test prompt_for_connection with invalid input than with valid input
         :param mock_input:
         """
-        result = self.client.prompt_for_connection()
+        result = self.client.prompt_for_host_addr()
         self.assertEqual(result, '127.0.0.1:8080')
 
     @patch('builtins.input', side_effect=['4'])
@@ -174,7 +174,7 @@ class ClientTest(unittest.TestCase):
         Test prompt_for_color_amount with valid input
         :param mock_input:
         """
-        result = self.client.prompt_for_color_amount()
+        result = self.client.prompt_for_number_of_colors()
         self.assertEqual(result, 5)
 
     @patch('builtins.input', side_effect=['', '9', '20', '5'])
@@ -183,7 +183,7 @@ class ClientTest(unittest.TestCase):
         Test prompt_for_color_amount with invalid input than with valid input
         :param mock_input:
         """
-        result = self.client.prompt_for_color_amount()
+        result = self.client.prompt_for_number_of_colors()
         self.assertEqual(result, 5)
 
     @patch('builtins.input', side_effect=['1', '2', '3', '4'])

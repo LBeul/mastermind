@@ -1,21 +1,23 @@
-from superhirn.data.code import Code
-from superhirn.data.rating import Rating
-from superhirn.logic import color_string_to_list
+from superhirn.logic.connector.data_controller_interface import DataControllerInterface
+from superhirn.logic.connector.ui_controller_interface import UiControllerInterface
 from superhirn.logic.encoder.encoder_interface import EncoderInterface
-from superhirn.logic.ui_connector.ui_connector_interface import UiControllerInterface
+from superhirn.logic.util.code import Code
+from superhirn.logic.util.rating import Rating
 
 
 class HumanEncoder(EncoderInterface):
-    def __init__(self, ui: UiControllerInterface):
+    def __init__(self, ui: UiControllerInterface, game_data: DataControllerInterface):
         self._ui = ui
-        self._generated_code = None
+        self._game_data = game_data
 
-    def generate_code(self, code_length: int, color_availabilities: int) -> Code:
-        input_string = self._ui.prompt_for_code(code_length, color_availabilities)
-        color_list = color_string_to_list(input_string)
-        return Code(color_list)
+    @property
+    def game_data(self):
+        return self._game_data
+
+    def generate_code(self) -> Code:
+        code = self._ui.prompt_for_code(self._game_data.get_code_length(), self._game_data.get_number_of_colors())
+        return code
 
     def rate(self, code_guess: Code) -> Rating:
-        input_string = self._ui.prompt_for_rating(len(code_guess.to_int_list()))
-        color_list = color_string_to_list(input_string)
-        return Rating(color_list)
+        rating = self._ui.prompt_for_rating(code_guess.get_length())
+        return rating

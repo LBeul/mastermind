@@ -1,11 +1,18 @@
 from abc import ABC, abstractmethod
 
-from superhirn.data.code import Code
+from superhirn.logic.util.code import Code
+from superhirn.logic.util.rating import Rating
 
 
 class EncoderInterface(ABC):
+
+    @property
     @abstractmethod
-    def generate_code(self, code_length: int, color_availabilities: int) -> Code:
+    def game_data(self):
+        pass
+
+    @abstractmethod
+    def generate_code(self) -> Code:
         """
         Generates a code of the given length and available colors
         :param code_length: length of the to be generated code.
@@ -15,7 +22,7 @@ class EncoderInterface(ABC):
         pass
 
     @abstractmethod
-    def rate(self, code_guess: Code) -> Code:
+    def rate(self, code_guess: Code) -> Rating:
         """
         Rates a code attempt by comparing it to the actual code and giving color-coded feedback:
         - BLACK values for each right guess (position and color)
