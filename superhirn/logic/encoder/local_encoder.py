@@ -22,15 +22,21 @@ class LocalEncoder(EncoderInterface):
         return Code(random_colors)
 
     def rate(self, code_guess: Code) -> Rating:
-        guess: str = code_guess.to_int_string()
-        goal: str = self._game_data.get_code().to_int_string()
+        guess: list[int] = code_guess.to_int_list().copy()
+        goal: list[int] = self._game_data.get_code().to_int_list().copy()
+        black = [
+            8
+            for actual, guessed in zip(goal, guess)
+            if actual == guessed
+        ]
 
-        black = 0
+        white = []
+        for guessed_value in guess:
+            if guessed_value in goal:
+                index = goal.index(guessed_value)
+                goal[index] = 0
+                white.append(7)
 
-        for x in range(self._game_data.get_code_length()):
-            if guess[x] == goal[x]:
-                black += 1
-
-        white = len(set(guess) & set(goal)) - black
-        rating = ([Color.BLACK] * black) + ([Color.WHITE] * white)
+        rating_values = black + white[:-len(black)]
+        rating = [Color(v) for v in rating_values]
         return Rating(rating)
