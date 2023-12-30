@@ -17,3 +17,9 @@ class LocalDecoderTestCase(unittest.TestCase):
         self.assertEqual(len(self.attempt.to_int_list()), self.length)
         for color in self.invalid_colors:
             self.assertNotIn(color.value, self.attempt.to_int_list())
+
+
+
+
+
+
