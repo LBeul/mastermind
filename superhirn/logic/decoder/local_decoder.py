@@ -1,15 +1,18 @@
 import itertools
+import random
 
 from superhirn.logic import Color
 from superhirn.logic.connector.data_controller_interface import DataControllerInterface
+from superhirn.logic.connector.ui_controller_interface import UiControllerInterface
 from superhirn.logic.decoder.decoder_interface import DecoderInterface
 from superhirn.logic.util.code import Code
 from superhirn.logic.util.rating import Rating
 
 
 class LocalDecoder(DecoderInterface):
-    def __init__(self, game_data: DataControllerInterface):
+    def __init__(self, ui: UiControllerInterface, game_data: DataControllerInterface):
         self._game_data = game_data
+        self._ui = ui
         self._possible_codes = set()
         self._attempts = []
         self.rating_cache = {}
@@ -26,7 +29,7 @@ class LocalDecoder(DecoderInterface):
         color_numbers = range(1, self.game_data.get_number_of_colors() + 1)
         all_color_combinations = itertools.product(color_numbers, repeat=self.game_data.get_code_length())
 
-        return all_color_combinations
+        return set(all_color_combinations)
 
     def guess(self):
         if not self._possible_codes:
@@ -74,7 +77,12 @@ class LocalDecoder(DecoderInterface):
 
         guess: list[int] = list(code_guess)
         goal: list[int] = list(code)
-        black = [8 for actual, guessed in zip(goal, guess) if actual == guessed]
+
+        black = [
+            8
+            for actual, guessed in zip(goal, guess)
+            if actual == guessed
+        ]
 
         white = []
         for guessed_value in guess:
@@ -83,7 +91,7 @@ class LocalDecoder(DecoderInterface):
                 goal[index] = 0
                 white.append(7)
 
-        rating_values = black + white[:-len(black)]
+        rating_values = black + white[:len(white) - len(black)]
         rating = Rating([Color(v) for v in rating_values])
 
         self.rating_cache[cache_key] = rating
@@ -96,18 +104,20 @@ class LocalDecoder(DecoderInterface):
         :return: next best guess
         """
         if not self._possible_codes:
-            raise Exception("No possible codes left to guess.")
+            self._ui.prompt_for_error_in_rating()
 
         if len(self._possible_codes) == 1:
             return next(iter(self._possible_codes))
 
         min_max_score = float('inf')
-        best_guess = None
+        best_guess = next(iter(self._possible_codes))
 
-        for guess in self._possible_codes:  # only iterate through remaining possible codes
+        sample = random.sample(self._possible_codes, min(1500, len(self._possible_codes)))
+
+        for guess in sample:
             score_counts = {}
 
-            for code in self._possible_codes:
+            for code in sample:
                 feedback = self.__rate_guess(guess, code)
                 feedback_key = (feedback.count_blacks(), feedback.count_whites())
                 score_counts[feedback_key] = score_counts.get(feedback_key, 0) + 1
