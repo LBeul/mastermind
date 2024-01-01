@@ -26,15 +26,17 @@ class LocalDecoder(DecoderInterface):
         color_numbers = range(1, self.game_data.get_number_of_colors() + 1)
         all_color_combinations = itertools.product(color_numbers, repeat=self.game_data.get_code_length())
 
-        return {Code([Color(color_number) for color_number in combination]) for combination in all_color_combinations}
+        return all_color_combinations
 
     def guess(self):
         if not self._possible_codes:
             self._possible_codes = self.__initialize_possible_codes()
         if not self._attempts:
             # Consider optimizing this initial guess
-            current_guess = Code([Color.RED, Color.RED, Color.RED, Color.GREEN, Color.GREEN, Color.GREEN][
-                                 :self.game_data.get_code_length()])
+            n = self._game_data.get_code_length()
+            num_ones = n // 2 + n % 2  # Add 1 more 1 if n is odd
+            num_twos = n // 2
+            current_guess = tuple([1] * num_ones + [2] * num_twos)
         else:
             last_guess = self._attempts[-1]
             last_rating = self.game_data.get_ratings()[-1]
@@ -42,7 +44,7 @@ class LocalDecoder(DecoderInterface):
             current_guess = self.__next_guess_based_on_minimax()
 
         self._attempts.append(current_guess)
-        return current_guess
+        return Code([Color(number) for number in current_guess])
 
     def __filter_possible_codes(self, last_guess, last_rating):
         """
@@ -58,7 +60,7 @@ class LocalDecoder(DecoderInterface):
                 tmp_possible_codes.append(code)
         self._possible_codes = tmp_possible_codes
 
-    def __rate_guess(self, code_guess: Code, code: Code):
+    def __rate_guess(self, code_guess: tuple[int], code: tuple[int]):
         """
         internal Helper Function to simulate a Rating for the given Codes
         :param code_guess: the question of the decoder
@@ -66,12 +68,12 @@ class LocalDecoder(DecoderInterface):
         :return: a rating of the provided guess(question)
         """
         # performance boost using a cache for already computed variations
-        cache_key = (code_guess.to_int_string(), code.to_int_string())
+        cache_key = (code_guess, code)
         if cache_key in self.rating_cache:
             return self.rating_cache[cache_key]
 
-        guess: list[int] = code_guess.to_int_list().copy()
-        goal: list[int] = code.to_int_list().copy()
+        guess: list[int] = list(code_guess)
+        goal: list[int] = list(code)
         black = [8 for actual, guessed in zip(goal, guess) if actual == guessed]
 
         white = []
