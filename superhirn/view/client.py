@@ -107,14 +107,14 @@ class Client(UiControllerInterface, ABC):
 
     def prompt_for_host_addr(self) -> str:
         while True:
-            connection = input("IP und Port? ")
+            connection = input("IP-Adresse und Port im Format 'IP:Port' : ")
             if self.__check_for_ui_command(connection):
                 return self.prompt_for_host_addr()
             match = re.match(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d{1,5}$', connection)
             if match:
                 return connection
             else:
-                print("Ungültige Eingabe. Bitte geben Sie eine gültige Adresse ein.")
+                print("Ungültige Eingabe. Bitte geben Sie eine gültige Adresse im Format IP:Port ein.")
 
     def prompt_for_code_length(self) -> int:
         while True:
