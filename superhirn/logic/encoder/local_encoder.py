@@ -24,6 +24,8 @@ class LocalEncoder(EncoderInterface):
     def rate(self, code_guess: Code) -> Rating:
         guess: list[int] = code_guess.to_int_list().copy()
         goal: list[int] = self._game_data.get_code().to_int_list().copy()
+        print(f"guess: {guess}")
+        print(f"goal: {goal}")
         black = [
             8
             for actual, guessed in zip(goal, guess)
@@ -37,6 +39,9 @@ class LocalEncoder(EncoderInterface):
                 goal[index] = 0
                 white.append(7)
 
-        rating_values = black + white[:-len(black)]
+        print(f"black: {black} ({len(black)})")
+        print(f"white: {white} ({len(white)})")
+        rating_values = black + white[:len(white) - len(black)]
+        print(f"rating_values: {rating_values}")
         rating = [Color(v) for v in rating_values]
         return Rating(rating)
