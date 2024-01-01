@@ -24,8 +24,8 @@ class TestSimple(unittest.TestCase):
         game.add_rating(given_rating=rating)
         self.assertIsNotNone(game.ratings)
 
-#  def test_count_white(self):
-#     code = [Color.WHITE, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE]
-#     rating = Rating(code)
-#    count = rating.count_white()
-#   self.assertEqual(3, count)
+    def test_count_white(self):
+        code = [Color.WHITE, Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE]
+        rating = Rating(code)
+        count = rating.count_whites()
+        self.assertEqual(3, count)
