@@ -59,7 +59,7 @@ class Client(UiControllerInterface, ABC):
         print("Spielfeld")
         print("--------------------------------------------------")
         if role == Role.ENCODER:
-            print("Code: " + code.__str__())
+            print(code.__str__() + " wird gesucht.")
         else:
             code_length = code.get_length()
             string_x = 'X' * code_length
@@ -205,6 +205,11 @@ class Client(UiControllerInterface, ABC):
         for char in rating:
             colors.append(Color(int(char)))
         return Rating(colors)
+
+    def prompt_for_error_in_rating(self):
+        print("Achtung! In einem deiner Feedbacks war ein Fehler.")
+        print("Sie haben das Spiel verloren")
+        exit()
 
     def show_end_screen(self, win: bool, code: Code):
         if win:

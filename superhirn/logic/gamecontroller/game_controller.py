@@ -33,7 +33,7 @@ class GameController(GameControllerInterface):
             raise Exception("Fehler: Spiel wurde schon gestartet!")
         self._role = ui.prompt_for_role()
         if self._role == Role.ENCODER:
-            self._decoder = LocalDecoder(game_data)
+            self._decoder = LocalDecoder(ui, game_data)
             self._encoder = HumanEncoder(ui, game_data)
         elif self._role == Role.DECODER:
 
@@ -41,7 +41,7 @@ class GameController(GameControllerInterface):
                 host = ui.prompt_for_host_addr()
                 self._encoder = NetworkEncoder(game_data, host, "42")
                 if ui.prompt_for_computer_decoder():
-                    self._decoder = LocalDecoder(game_data)
+                    self._decoder = LocalDecoder(ui, game_data)
                 else:
                     self._decoder = HumanDecoder(ui, game_data)
             else:
