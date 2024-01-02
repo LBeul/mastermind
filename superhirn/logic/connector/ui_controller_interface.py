@@ -116,3 +116,11 @@ class UiControllerInterface(ABC):
         Shows the start screen for the player.
         """
         pass
+
+    @abstractmethod
+    def prompt_for_error_in_rating(self):
+        """
+        Shows an error message indicating that the user entered an invalid rating and exits the game.
+        :return:
+        """
+        pass
