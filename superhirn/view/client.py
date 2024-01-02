@@ -229,6 +229,9 @@ class Client(UiControllerInterface, ABC):
         else:
             print("Verloren", code)
 
+    def show_connection_error(self):
+        print("Server antwortet nicht. -> Spiel wird beendet.")
+
     def show_start_screen(self):
         self.__clear_screen()
         print("--------------------------------------------------")

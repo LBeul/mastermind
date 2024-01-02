@@ -59,7 +59,11 @@ class GameController(GameControllerInterface):
         if not self._setup_completed:
             raise Exception("Fehler: Spiel wurde noch nicht initialisiert")
         decoder_win = False
-        code = self._encoder.generate_code()
+        try:
+            code = self._encoder.generate_code()
+        except:
+            self._ui.show_connection_error()
+            exit()
         self._game_data.set_code(code)
         self._ui.update_board(self._game_data.get_questions(), self._game_data.get_ratings(), self._role,
                               self._game_data.get_code())
@@ -69,8 +73,11 @@ class GameController(GameControllerInterface):
             self._game_data.add_question(guess)
             self._ui.update_board(self._game_data.get_questions(), self._game_data.get_ratings(), self._role,
                                   self._game_data.get_code())
-
-            rating = self._encoder.rate(guess)
+            try:
+                rating = self._encoder.rate(guess)
+            except:
+                self._ui.show_connection_error()
+                exit()
             self._game_data.add_rating(rating)
             self._ui.update_board(self._game_data.get_questions(), self._game_data.get_ratings(), self._role,
                                   self._game_data.get_code())

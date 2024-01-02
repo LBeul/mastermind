@@ -124,3 +124,10 @@ class UiControllerInterface(ABC):
         :return:
         """
         pass
+
+    @abstractmethod
+    def show_connection_error(self):
+        """
+        Shows an error message indicating that the connection to the server failed
+        """
+        pass
