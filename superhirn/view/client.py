@@ -39,19 +39,15 @@ class Client(UiControllerInterface, ABC):
         print("--------------------------------------------------")
         print("Das Spiel Superhirn ist ein amüsantes Knobelspiel für 2 Personen.")
         print(
-            "Bei diesem Spiel überlegt sich eine der beiden Personen einen 6-stelligen Code aus 8 verschiedenen Farben."
+            "Bei diesem Spiel überlegt sich eine der beiden Personen  Code aus verschiedenen Farben."
         )
         print("Diese Person wird Codierer genannt. "
-              "Die andere Person versucht den Code zu lösen in dem sie zunächst rät "
-              "und erhält daraufhin einen maximal fünfstelligen schwarzweißen Feedback-Code erhält. "
-              "Diese Person ist der Rater.")
-        print("Dabei heißt schwarz eine der Farben ist richtig und an der richtigen Stelle,"
-              "weiß bedeutet eine Farbe ist richtig aber an der falschen Position."
-              "Ist eine Farbe öfter geraten als sie im eigentlichen Code vertreten ist,"
-              "gehen die übrigbleibenden Farben nicht in das Feedback mit ein.")
-        print("Das Raten und das Feedback als Reaktion sind zusammen eine Runde. "
-              "Gespielt wird maximal 12 Runden."
-              "Wird der Code erraten gewinnt der Rater, wird er nicht erraten gewinnt der Codierer.")
+              "Die andere Person versucht den Code zu lösen, diese Person ist der Rater.")
+        print("Der Codierer gibt zu jedem Rateversuch ein Feedback.")
+        print("Hierbei bedeutet ein schwarzer Stift(8), dass eine der Farben richtig und an der korrekten Stelle ist"
+              "und ein weißer Stift(7), dass eine Farbe zwar richtig aber an der falschen Stelle ist.")
+        print("Der Rate hat maximal 10 Versuche den Code zu knacken.")
+        print("Wird der Code erraten gewinnt der Rater, wird er nicht erraten gewinnt der Codierer.")
         print("")
         print("Bekennen sie Farbe und haben Sie viel Vergnügen.")
         print("--------------------------------------------------")
