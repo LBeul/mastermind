@@ -154,7 +154,7 @@ class Client(UiControllerInterface, ABC):
                 code = input("Bitte gebe einen Code ein: ")
                 if self.__check_for_ui_command(code):
                     return self.prompt_for_code(code_length, number_of_colors)
-                if not all(char in color_check for char in code) or len(code) > code_length:
+                if not all(char in color_check for char in code) or len(code) != code_length:
                     print("Ungültige Eingabe. Bitte geben Sie einen Code aus den verfügbaren Farben ein")
                 else:
                     break
