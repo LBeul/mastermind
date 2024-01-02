@@ -49,3 +49,6 @@ class Code:
         :return: List of colors.
         """
         return self._colors
+
+    def __eq__(self, other):
+        return self.to_int_list() == other.to_int_list()
