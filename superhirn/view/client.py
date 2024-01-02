@@ -37,7 +37,23 @@ class Client(UiControllerInterface, ABC):
         print("--------------------------------------------------")
         print("Spielanleitung")
         print("--------------------------------------------------")
-        print("Anleitung 1,2,3")
+        print("Das Spiel Superhirn ist ein amüsantes Knobelspiel für 2 Personen.")
+        print(
+            "Bei diesem Spiel überlegt sich eine der beiden Personen einen 6-stelligen Code aus 8 verschiedenen Farben."
+        )
+        print("Diese Person wird Codierer genannt. "
+              "Die andere Person versucht den Code zu lösen in dem sie zunächst rät "
+              "und erhält daraufhin einen maximal fünfstelligen schwarzweißen Feedback-Code erhält. "
+              "Diese Person ist der Rater.")
+        print("Dabei heißt schwarz eine der Farben ist richtig und an der richtigen Stelle,"
+              "weiß bedeutet eine Farbe ist richtig aber an der falschen Position."
+              "Ist eine Farbe öfter geraten als sie im eigentlichen Code vertreten ist,"
+              "gehen die übrigbleibenden Farben nicht in das Feedback mit ein.")
+        print("Das Raten und das Feedback als Reaktion sind zusammen eine Runde. "
+              "Gespielt wird maximal 12 Runden."
+              "Wird der Code erraten gewinnt der Rater, wird er nicht erraten gewinnt der Codierer.")
+        print("")
+        print("Bekennen sie Farbe und haben Sie viel Vergnügen.")
         print("--------------------------------------------------")
         print("'help' zum Anzeigen der Spielanleitung")
         print("'exit' zum Beenden")
