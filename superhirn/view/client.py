@@ -49,7 +49,7 @@ class Client(UiControllerInterface, ABC):
         print("Der Rate hat maximal 10 Versuche den Code zu knacken.")
         print("Wird der Code erraten gewinnt der Rater, wird er nicht erraten gewinnt der Codierer.")
         print("")
-        print("Bekennen sie Farbe und haben Sie viel Vergnügen.")
+        print("Bekennen Sie Farbe und haben Sie viel Vergnügen.")
         print("--------------------------------------------------")
         print("'help' zum Anzeigen der Spielanleitung")
         print("'exit' zum Beenden")
