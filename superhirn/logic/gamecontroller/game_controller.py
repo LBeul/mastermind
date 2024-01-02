@@ -58,24 +58,34 @@ class GameController(GameControllerInterface):
     def start(self):
         if not self._setup_completed:
             raise Exception("Fehler: Spiel wurde noch nicht initialisiert")
-        win = False
-        code = self._encoder.generate_code()
+        decoder_win = False
+        try:
+            code = self._encoder.generate_code()
+        except:
+            self._ui.show_connection_error()
+            exit()
         self._game_data.set_code(code)
         self._ui.update_board(self._game_data.get_questions(), self._game_data.get_ratings(), self._role,
                               self._game_data.get_code())
-        while self._turn_counter <= self._max_turns and win is False:
+        while self._turn_counter <= self._max_turns and decoder_win is False:
             self._turn_counter += 1
             guess = self._decoder.guess()
             self._game_data.add_question(guess)
             self._ui.update_board(self._game_data.get_questions(), self._game_data.get_ratings(), self._role,
                                   self._game_data.get_code())
-
-            rating = self._encoder.rate(guess)
+            try:
+                rating = self._encoder.rate(guess)
+            except:
+                self._ui.show_connection_error()
+                exit()
             self._game_data.add_rating(rating)
             self._ui.update_board(self._game_data.get_questions(), self._game_data.get_ratings(), self._role,
                                   self._game_data.get_code())
 
             if rating.count_blacks() == self._game_data.get_code_length():
-                win = True
+                decoder_win = True
 
+        win = decoder_win
+        if self._role == Role.ENCODER:
+            win = decoder_win is False
         self._ui.show_end_screen(win, self._game_data.get_code())

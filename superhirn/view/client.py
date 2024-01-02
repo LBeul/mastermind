@@ -37,7 +37,19 @@ class Client(UiControllerInterface, ABC):
         print("--------------------------------------------------")
         print("Spielanleitung")
         print("--------------------------------------------------")
-        print("Anleitung 1,2,3")
+        print("Das Spiel Superhirn ist ein amüsantes Knobelspiel für 2 Personen.")
+        print(
+            "Bei diesem Spiel überlegt sich eine der beiden Personen  Code aus verschiedenen Farben."
+        )
+        print("Diese Person wird Codierer genannt. "
+              "Die andere Person versucht den Code zu lösen, diese Person ist der Rater.")
+        print("Der Codierer gibt zu jedem Rateversuch ein Feedback.")
+        print("Hierbei bedeutet ein schwarzer Stift(8), dass eine der Farben richtig und an der korrekten Stelle ist"
+              "und ein weißer Stift(7), dass eine Farbe zwar richtig aber an der falschen Stelle ist.")
+        print("Der Rate hat maximal 10 Versuche den Code zu knacken.")
+        print("Wird der Code erraten gewinnt der Rater, wird er nicht erraten gewinnt der Codierer.")
+        print("")
+        print("Bekennen Sie Farbe und haben Sie viel Vergnügen.")
         print("--------------------------------------------------")
         print("'help' zum Anzeigen der Spielanleitung")
         print("'exit' zum Beenden")
@@ -216,6 +228,9 @@ class Client(UiControllerInterface, ABC):
             print("Gewonnen", code)
         else:
             print("Verloren", code)
+
+    def show_connection_error(self):
+        print("Server antwortet nicht. -> Spiel wird beendet.")
 
     def show_start_screen(self):
         self.__clear_screen()
