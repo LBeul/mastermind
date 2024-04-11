@@ -1,29 +1,23 @@
-# WiSe23-24_Superhirn_13
+# Mastermind
 
-Python Source Code of the "Super Superhirn" CLI Game.
-
-## Team #13
-
-- Till Giesa
-- Marc Sabrautzki
-- Philipp Röber
-- Ole Gleß
-- Louis Beul
+Python Source Code of the "Superhirn" (Mastermind) CLI Game.
 
 ## Environment Details
 
 - `.gitignore` is set up to ignore all OS-specific files as well as IDE configs and python binaries
 - `.editorconfig` sets project-wide consistent coding styles
-    - per default active in _PyCharm_
-    - needs to be activated within _VSCode_ ([here's how](https://editorconfig.org/))
+  - per default active in _PyCharm_
+  - needs to be activated within _VSCode_ ([here's how](https://editorconfig.org/))
 
-## Helpful IDE tricks
+## Helpful IDE hacks
 
 - Activate _format on save_ to automatically reformat violated style conventions
-    - PyCharm: <kbd>Settings</kbd> -> <kbd>Tools</kbd> -> <kbd>Actions on Save</kbd> -> <kbd>Reformat Code</kbd>
+  - PyCharm: <kbd>Settings</kbd> -> <kbd>Tools</kbd> -> <kbd>Actions on Save</kbd> -> <kbd>Reformat Code</kbd>
 
 ## How to install
+
 Precondition:
+
 - python and pip installed
 
 1. Download this repo
